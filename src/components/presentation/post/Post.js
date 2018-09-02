@@ -8,6 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { UserBar } from "../";
+import { AutoScaledImage, Fonts } from "../../utilities";
 import config from "../../../config";
 
 class Post extends Component {
@@ -25,10 +26,9 @@ class Post extends Component {
 
   render() {
     const imageUri =
-      "https://lh3.googleusercontent.com/PHISljl9oGsbPgshHTrr69nFnjFhXrtWnc4ING0YemuBUF28yZbytxbyUywdx92rZNMMU3BS5g_OP85YOlpmfhnWVw" +
-      "=s" +
-      Math.floor(this.state.deviceWidth * 1.1) +
-      "-c";
+      this.props.item % 2 === 0
+        ? "https://lh3.googleusercontent.com/eLxETOl6vgIj6TaZUBrzCAJ77V3I6ssOlS3g_tmxozOcvl3jVDQEIuQ2yANgak0Ud6GnoIbwOINARqqGzaGmQWCx0g"
+        : "https://lh3.googleusercontent.com/aQNSSQ3YZaLeo18igJ4LjfIbPNZuVNivoZDL9dQJ9k44LsE6PWQejYD6AYRFKmNtJCsMoHrdptg15VTEPPWxPILZSA";
 
     const heartColor = this.state.liked ? "rgb(252, 61, 57)" : null;
 
@@ -36,15 +36,7 @@ class Post extends Component {
       <View>
         <UserBar />
         <TouchableOpacity activeOpacity={0.6} onPress={this.handleLikeToggled}>
-          <Image
-            style={{
-              width: this.state.deviceWidth,
-              height: Math.floor(this.state.deviceWidth * 1.1)
-            }}
-            source={{
-              uri: imageUri
-            }}
-          />
+          <AutoScaledImage uri={imageUri} width={this.state.deviceWidth} />
         </TouchableOpacity>
         <View style={styles.iconBar}>
           <Image
@@ -57,26 +49,29 @@ class Post extends Component {
           />
           <Image style={styles.icon} source={config.images.arrowIcon} />
         </View>
+        <View style={[styles.iconBar, { height: 30 }]}>
+          <Text
+            style={{
+              fontFamily: Fonts.RobotoRegular,
+              fontWeight: "bold",
+              color: "black"
+            }}
+          >
+            56 likes
+          </Text>
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  userPic: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    borderWidth: 0.5,
-    borderColor: "#d6d7da"
-  },
   iconBar: {
-    height: config.styleConstants.rowHeight,
+    height: 35,
     width: 100 + "%",
     borderColor: "rgb(230,230,230)",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center"
   },
 
   icon: {
